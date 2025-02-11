@@ -616,7 +616,7 @@ def upload_post():
         filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
-        image_path = f"/{save_path.replace('\\', '/')}"
+        image_path = "/" + save_path.replace("\\", "/")
 
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -749,7 +749,7 @@ def edit_profile(login):
             filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{login}_{file.filename}"
             save_path = os.path.join(UPLOAD_FOLDER_AVATAR, filename)
             file.save(save_path)
-            image_path = f"/{save_path.replace('\\', '/')}"
+            image_path = "/" + save_path.replace("\\", "/")
             avatar_path = f"images/user_avatar/{filename}"
 
         conn = sqlite3.connect("db/users.db")
@@ -1085,7 +1085,7 @@ def add_comment():
 
     conn.close()
 
-    print(f"[{created_at}] {commented_by} написал комментарий {post_owner} на пост {post_id}: \"{comment_text}\"")
+    print(f"Написал комментарий")
 
     return jsonify({'CommentCount': comments_count, 'comment': True})
 
@@ -1340,7 +1340,6 @@ def add_faq():
         if not question or not answer:
             return jsonify({"message": "Ошибка: Заполните все поля"}), 400
 
-        print(f"Получено:\nВопрос: {question}\nОтвет: {answer}")
 
         conn = sqlite3.connect("db/faq.db")
         cursor = conn.cursor()
