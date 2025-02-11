@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление пользователями</title>
+</head>
+
+<style>
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #F4F6F7;
+        color: #333;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .admin-test-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        gap: 10px;
+    }
+
+    .admin-test-container h1{
+        align-items: center;
+        text-align: center;
+    } 
+
+    .test-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 100%;
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 10px;
+    }   
+
+    .container-text-test {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        gap: 10px;
+    }
+
+    .data-user-add {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        max-width: 500px;
+        word-wrap: break-word;
+        white-space: normal;
+        overflow-wrap: break-word;
+        overflow: hidden;
+    }
+
+    .text-test-data {
+        font-size: 0.9em;
+        color: #333;
+        line-height: 1.6;
+        word-wrap: break-word;
+        white-space: normal;
+        overflow-wrap: break-word;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .test-name {
+        text-align: center;
+        align-items: center;
+        font-size: 1.2em;    
+    }
+
+    .button-data-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .block-user-a-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e74c3c;
+        background-color: #ffffff;
+        font-size: 1.2em;
+        cursor: pointer;
+        height: 50px;
+        gap: 5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .block-user-a-btn:hover {
+        color: #c0392b;
+        background-color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .owner-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        gap: 5px;
+        color: #2f8533;
+        background-color: #ffffff;
+        font-size: 1.2em;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .owner-btn:hover {
+        color: #2f8533;
+        background-color: #ffffff;
+        transform: translateY(-2px);
+    }   
+
+    .block-user-a-btn i, .owner-btn  i {
+        pointer-events: none;
+    }
+
+    .a-user-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .a-user-login {
+        font-size: 0.8em;
+        color: #388E3C;
+    }
+
+    .a-user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .role-user-data {
+        font-size: 0.9em;
+        color: #388E3C;
+        margin-top: 5px;
+    }
+
+    .count-user {
+        color: #388E3C;
+    }   
+
+    @media (max-width: 999px) {
+        .test-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .container-text-test  {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .button-data-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+
+</style>
+
+<body>
+    <div class="admin-test-container">
+        <h1>Управление пользователями <span class="count-user">( {{ total_users }} )</span></h1>
+        {% for user in users %}
+        <div class="test-container">
+            <a href="/user/{{ user[3] }}" class="a-user-link">
+                <div class="container-text-test">
+                    <img src="{{ url_for('static', filename=user[10]) }}" alt="Avatar" class="a-user-avatar">
+                    <div class="data-user-add">
+                        <h2 class="test-name">{{ user[1] }} {{ user[2] }} <span class="a-user-login">@{{ user[3] }}</span> </h2>
+                        <p class="text-test-data">{{ user[6] }}</p>
+                        <p class="role-user-data">{{ user[9] }}</p>
+                    </div>
+                </div>
+            </a>
+            <div class="button-data-container">
+                {% if current_user.login == 'vad3oo' or (user[3] != 'vad3oo' and user[9] != 'admin') %}
+                <button class="block-user-a-btn" data-login="{{ user[3] }}">
+                    <i class="bi bi-person-x-fill"></i> Заблокировать
+                </button>
+                {% endif %}
+                {% if current_user.login == 'vad3oo' %}
+                <button class="owner-btn" data-login="{{ user[3] }}">
+                    <i class="bi bi-stars"></i> {% if user[9] == 'admin' %} Понизить {% else %} Повысить {% endif %}
+                </button>  
+                {% endif %}
+            </div>  
+        </div>
+        
+        {% endfor %}
+    </div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("click", function (event) {
+            const button = event.target.closest("button");
+            if (!button) return;
+
+            const userLogin = button.getAttribute("data-login");
+
+            if (button.classList.contains("block-user-a-btn")) {
+                if (!confirm(`Вы уверены, что хотите удалить пользователя ${userLogin}?`)) return;
+
+                fetch("/admin/delete-user", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ login: userLogin })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        button.closest(".test-container").remove();
+                        alert("Пользователь удален.");
+                    } else {
+                        alert("Ошибка: " + data.error);
+                    }
+                })
+                .catch(() => alert("Ошибка сети. Попробуйте снова."));
+            }
+
+            if (button.classList.contains("owner-btn")) {
+                fetch("/admin/update-role", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ login: userLogin })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const roleElement = button.closest(".test-container").querySelector(".role-user-data");
+                        if (roleElement) {
+                            roleElement.textContent = "admin";
+                        }
+                        button.disabled = true;
+                    } else {
+                        alert("Ошибка: " + data.error);
+                    }
+                })
+                .catch(() => alert("Ошибка сети. Попробуйте снова."));
+            }
+        });
+    });
+
+</script>
+
+</html>

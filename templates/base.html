@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} JouHealth {% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/reg.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="/static/css/profile.css">
+    <link rel="stylesheet" href="/static/css/edit_profile.css">
+
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F7;
+            color: #333;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        header {
+            background: linear-gradient(-100deg, #4CAF50, #388E3C);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-family: 'Berkshire Swash', cursive;
+            font-size: 2rem;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: flex-start;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand .part1 {
+            color: #ffffff;
+            text-transform: capitalize;
+        }
+
+        .navbar-brand .part2 {
+            color: #FFD700;
+            text-transform: capitalize;
+        }
+
+        .navbar {
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #FFD700;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item .admin-link {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            color: white;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-item .admin-link:hover {
+            background-color: #388E3C;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        main .container {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        .navbar .dropdown-menu {
+            border-radius: 0.5rem;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+
+        .navbar .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar .dropdown-item {
+            padding: 8px 20px;
+            font-size: 14px;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar .dropdown-item:hover {
+            background-color: #f0f0f0;
+            color: #4CAF50;
+        }
+
+        .navbar .dropdown-toggle {
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .dropdown-toggle:hover {
+            color: #4CAF50;
+        }
+
+        .navbar .avatar {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        footer {
+            background: linear-gradient(-100deg, #4CAF50, #388E3C);
+            color: #fff;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        footer .navbar-brand {
+            font-size: 1.5rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        footer .social-icons a {
+            font-size: 20px;
+            margin-right: 10px;
+            color: #fff;
+        }
+
+        footer .social-icons a:hover {
+            color: #007bff;
+        }
+
+        footer p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        footer h5 {
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        footer a:hover {
+            color: #f8d210 !important;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <span class="part1">Jou</span><span class="part2">Health</span>
+                </a>                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link active" href="/"><i class="bi bi-house-door"></i> Главная</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/#about-us"><i class="bi bi-book"></i> О нас</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/posts"><i class="bi bi-file-earmark-text"></i> Лента</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/quizzes"><i class="bi bi-question-circle"></i> Тесты</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/faq"><i class="bi bi-info-circle"></i> FAQ</a></li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        {% if current_user.is_authenticated %}
+                            {% if current_user.role == 'admin' %}
+                                <li class="nav-item admin-button">
+                                    <a class="nav-link admin-link" href="/admin">
+                                        <i class="bi bi-gear me-2"></i> Admin Панель
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{ url_for('static', filename=user.avatar) }}" class="avatar rounded-circle me-2" alt="Аватар">
+                                    <span>{{ user.name }} {{ user.surname }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="{{ url_for('view_user_profile', login=user.login) }}"><i class="bi bi-person-circle"></i> Мой профиль</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> Выйти</a></li>
+                                </ul>
+                            </li>                            
+                                                     
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="/login"><i class="bi bi-box-arrow-in-right"></i> Вход</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer style="background-color: #343a40; color: #fff; padding: 40px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <a class="navbar-brand" href="/" style="display: flex; align-items: center; color: #fff; font-size: 24px; font-weight: bold;">
+                        <span class="part1">Jou</span><span class="part2">Health</span>
+                    </a>
+                    <p style="margin-top: 10px;">Станьте частью нашего движения! Посетите наш сайт, участвуйте в обсуждениях и мероприятиях, чтобы помочь нам сделать мир безопаснее и здоровее.</p>
+                    <p>© 2025 JouHealth. Все права защищены.</p>
+                </div>
+
+                <div class="col-md-3">
+                    <h5><i class="bi bi-telephone"></i> Контакты</h5>
+                    <p><strong>Email:</strong> <a href="mailto:info@healthy-life.ru" style="color: #fff;">info@healthy-life.ru</a></p>
+                    <p><strong>Телефон:</strong> <a href="tel:+79001234567" style="color: #fff;">+7 (900) 123-45-67</a></p>
+                    <p><strong>Адрес:</strong> ул. Здоровья, 10, Москва, Россия</p>
+                    <p><strong>Часы работы:</strong><br>Пн-Пт: 09:00 - 18:00<br>Сб-Вс: выходной</p>
+                </div>
+
+                <div class="col-md-3">
+                    <h5><i class="bi bi-link"></i> Полезные ссылки</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" style="color: #fff;">О нас</a></li>
+                        <li><a href="#" style="color: #fff;">FAQ</a></li>
+                        <li><a href="#" style="color: #fff;">Поддержка</a></li>
+                        <li><a href="#" style="color: #fff;">Партнерство</a></li>
+                        <li><a href="#" style="color: #fff;">Конфиденциальность</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3">
+                    <h5>Мы в соцсетях</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-youtube"></i> <a href="#" style="color: #fff;">YouTube (JouHealth)</a></li>
+                        <li><i class="bi bi-tiktok"></i> <a href="#" style="color: #fff;">TikTok (@jouhealth)</a></li>
+                        <li><i class="bi bi-telegram"></i> <a href="#" style="color: #fff;">Telegram (@jouhealth)</a></li>
+                        <li><i class="bi bi-instagram"></i> <a href="#" style="color: #fff;">Instagram (@jouhealth)</a></li>
+                        <li><i class="bi bi-discord"></i> <a href="#" style="color: #fff;">Discord (JouHealth)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        AOS.init();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/block_user.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/reg.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/post.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/add_comments.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/liked.js') }}"></script>
+
+</body>
+</html>

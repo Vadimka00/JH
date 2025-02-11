@@ -1,0 +1,742 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %} Мой профиль {% endblock %}
+
+{% block content %}
+
+<style>
+
+.content-profile {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    margin: auto;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.profile-main {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.avatar-content {
+    position: relative;
+}
+
+.profile-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.content-name {
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.account-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.city {
+    color: #388E3C;
+}
+
+.account-login {
+    font-size: 0.8em;
+    color: #388E3C;
+}
+
+.bio-container {
+    max-width: 600px;
+}
+
+.bio {
+    font-size: 0.9em;
+    color: #333;
+    line-height: 1.6; 
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.location {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.btn-edit-profile {
+    padding: 10px 10px;
+    background: #388E3C;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+.btn-edit-profile:hover {
+    padding: 10px 10px;
+    background: #2f8533;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+.social-over {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item h5 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.stat-item p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #555;
+}
+
+.my-content {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.add-content {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    padding: 10px;
+}
+
+.input-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    width: 100%;
+    position: relative;
+}
+
+textarea {
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1em;
+    resize: none;
+    height: 40px;
+    max-height: 500px;
+    overflow-y: hidden;
+    background: #f5f5f5;
+    transition: all 0.2s ease;
+}
+
+textarea:focus {
+    outline: none;
+    background: white;
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+}
+
+.btn-submit {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #388E3C;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.btn-attach {
+    min-width: 120px;
+    height: 40px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #388E3C;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.btn-attach:hover, .btn-submit:hover {
+    background: #2E7D32;
+}
+
+.btn-submit:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: scale(0.95);
+}
+
+.post-text {
+    font-size: 1em;
+    color: #333;
+}
+
+.post-image {
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.post {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.feed-content {
+    width: 80%;
+    margin: auto;
+    
+}
+
+.feed-post {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+.feed-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+    max-width: 100%;
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    position: relative;
+}
+
+.feed-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.image-with-blur {
+    filter: blur(10px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.normal-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    z-index: 1;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 12px;
+}
+
+.data-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.feed-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.feed-user-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+}
+
+.add-feed-data {
+    font-size: 0.9em;
+    color: #388E3C;
+    margin-top: 5px;
+}
+
+.container-text-feed {
+    border-radius: 12px;
+    min-height: 30px;
+}
+
+.text-feed-data {
+    font-size: 1em;
+    color: #4e4e4e;
+    line-height: 1.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.emoji-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.static-button {
+    display: flex;
+    gap: 10px;
+}
+
+.interaction-btn {
+    background: none;
+    border: none;
+    color: #777777;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.interaction-btn:hover {
+    color: #f07c8a;
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.liked {
+    color: #f07c8a;
+}
+
+.interaction-btn-comments {
+    background: none;
+    border: none;
+    color: #777777;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.interaction-btn-comments:hover {
+    color: #388E3C;
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.commented {
+        color: #388E3C;
+    }
+
+.delete-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #e74c3c;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.feed-post-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.feed-post-link:hover .feed-post {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn:hover {
+    color: #c0392b;
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.delete-btn i {
+    font-size: 1.2em;
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    .image-container {
+        max-height: 400px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 991px) {
+    .image-container {
+        max-height: 300px;
+    }
+
+    .profile-main {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-profile {
+        max-width: 90%;
+    }
+    .feed-content {
+        width: 90%;
+    }
+    .my-content {
+        width: 90%;
+    }
+    .profile-main {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .feed-post {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .image-container {
+        max-height: 200px;
+    }
+
+    .text-container {
+        max-width: 100%;
+    }
+
+    .data-user {
+        flex-direction: row;
+        align-items: start;
+    }
+
+    .feed-avatar {
+        width: 45px;
+        height: 45px;
+    }
+
+    .feed-user-name {
+        font-size: 1em;
+    }
+
+    .text-feed-data {
+        font-size: 0.9em;
+    }
+
+    .emoji-date {
+        flex-direction: row;
+    }
+    
+
+    .interaction-btn {
+        font-size: 1.1em;
+        padding: 8px 12px;
+    }
+
+    .delete-btn {
+        font-size: 1.5em;
+        padding: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .delete-btn span {
+        display: none;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .feed-post {
+        padding: 12px;
+    }
+
+    .feed-image {
+        object-fit: cover;
+    }
+
+    .feed-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .data-user {
+        flex-direction: row;
+        align-items: start;
+    }
+
+    .feed-user-name {
+        font-size: 0.9em;
+        text-align: start;
+    }
+
+    .delete-btn span {
+        display: none;
+    }
+
+    .delete-btn {
+        font-size: 1.5em;
+        padding: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .text-feed-data {
+        font-size: 0.8em;
+    }
+}
+
+</style>
+
+<div class="content-profile">
+    <div class="banner"></div>
+
+    <div class="profile-main">
+        <div class="avatar-content">
+            <img src="{{ url_for('static', filename=user['avatar']) }}" alt="Avatar" class="profile-avatar">
+        </div>
+
+        <div class="content-name">
+            <h1 class="account-name">{{ user.name }} {{ user.surname }} <span class="account-login">@{{ user['login'] }}</span></h1>
+            <p class="location"> <span class="city">Город:</span> {{ user['city'] }}</p>
+            <div class="bio-container">
+                <p class="bio">{{ user['bio'] }}</p>
+            </div>
+        </div>
+
+        <button id="edit-profile-btn" class="btn btn-edit-profile">
+            <i class="fa fa-pencil-alt"></i> Редактировать
+        </button>
+                               
+    </div>
+
+    <div class="social-over">
+        <div class="stat-item">
+            <h5>{{ user.total_likes }}</h5>
+            <p>Лайков</p>
+        </div>
+        <div class="stat-item">
+            <h5>{{ user.count_post }}</h5>
+            <p>Постов</p>
+        </div>
+    </div>
+</div>
+
+<div class="my-content">
+    <h3 class="post-title">Добавить публикацию</h3>
+    <div class="add-content">
+        <form id="post-form" enctype="multipart/form-data">
+            <div class="preview-container" id="image-preview"></div>
+            <div class="input-container">
+                <textarea id="post-text" placeholder="Напишите что-то..." rows="1"></textarea>
+                <label for="post-image" class="btn-attach">
+                    <i class="fa fa-plus"></i>
+                    <span>Фото</span>
+                </label>
+                <input type="file" id="post-image" accept="image/*" style="display:none;">
+                <button type="submit" class="btn-submit" disabled>
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="feed-content">
+    {% if user.count_post > 0 %}
+        <h3 class="post-title">Твои публикации</h3>
+        {% for post in posts %}
+            <div class="feed-post">
+                <a href="/user/{{ user['login'] }}" class="feed-post-link">
+                    <div class="data-user">
+                        <img src="{{ url_for('static', filename=user['avatar']) }}" alt="Avatar" class="feed-avatar">
+                        <div class="data-user-add">
+                            <h2 class="feed-user-name">{{ user.name }} {{ user.surname }}</h2>
+                            <h3 class="add-feed-data">{{ post.created_at }}</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="/post/{{ user['login'] }}/{{ post.post_id }}" class="feed-post-link">
+                    <div class="image-container">
+                        {% if post.image_path %}
+                            <img src="{{ post.image_path }}" alt="Фото поста" class="feed-image image-with-blur">
+                            <img src="{{ post.image_path }}" alt="Фото поста" class="feed-image normal-image">
+                        {% endif %}
+                    </div>
+                    
+                           
+                    <div class="text-container">
+                        <div class="container-text-feed">
+                            <p class="text-feed-data">{{ post.text }}</p>
+                        </div>
+                </a>
+                    <div class="emoji-date">
+                        <div class="static-button">
+                            <button class="interaction-btn {% if post.user_liked_post %}liked{% endif %}" data-post-owner="{{ user['login'] }}" data-post-id="{{ post.post_id }}">
+                                <i class="bi bi-heart-fill"></i>
+                                <span>{{ post.like_count }}</span>
+                            </button>
+                            <a href="/post/{{ user['login'] }}/{{ post.post_id }}" class="feed-post-link">
+                                <button class="interaction-btn-comments {% if post.comments_count > 0 %}commented{% endif %}">
+                                    <i class="bi bi-chat-right-heart-fill"></i>
+                                    <span>{{ post.comments_count }}</span>
+                                </button>
+                            </a>
+                        </div>
+                        <button class="delete-btn" data-post-id="{{ post.post_id }}" data-login="{{ user['login'] }}">
+                            <i class="bi bi-trash"></i>
+                            <span>Удалить публикацию</span>
+                        </button>                        
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+
+    {% endif %}
+</div>
+
+<div id="edit-profile-modal" class="modal">
+    <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <h2 class="modal-title">Редактировать профиль</h2>
+        <form class="profile-form" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="avatar-container">
+                    <label for="avatar" class="avatar-label">
+                        <img src="{{ url_for('static', filename=user['avatar']) }}" alt="Аватар" id="avatar-preview">
+                        <div class="upload-text">Загрузить фото</div>
+                    </label>
+                    <input type="file" id="avatar" name="avatar" style="display: none;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="first-name" class="name-label">Имя</label>
+                <input type="text" id="first-name" name="firstName" value="{{ user['name'] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="last-name" class="name-label">Фамилия</label>
+                <input type="text" id="last-name" name="lastName" value="{{ user['surname'] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="city" class="name-label">Город</label>
+                <input type="text" id="city" name="city" value="{{ user['city'] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birth-date" class="name-label">Дата рождения</label>
+                <input type="text" id="birth-date" name="dob" value="{{ user['birth'] }}" required>
+            </div>                     
+
+            <div class="form-group">
+                <label for="about-me" class="name-label">О себе</label>
+                <textarea id="about-me" name="bio" rows="1">{{ user['bio'] }}</textarea>
+                <span id="char-count">0/0 символов</span>
+            </div>
+            
+
+            <button type="submit" class="submit-btn">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/edit_profile.js') }}"></script>
+
+<script>
+    const userLogin = "{{ user['login'] }}";
+</script>
+
+{% endblock %}

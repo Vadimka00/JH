@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Тестами</title>
+</head>
+
+<style>
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #F4F6F7;
+        color: #333;
+    }
+
+    .admin-test-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .admin-test-container h1{
+        align-items: center;
+        text-align: center;
+    } 
+
+    .test-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 10px;
+    }   
+
+    .container-text-test {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        text-align: start;
+    }
+
+    .test-name {
+        text-align: center;
+        align-items: center;
+        font-size: 1.2em;    
+    }
+
+    .del-faq-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e74c3c;
+        font-size: 1.2em;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .del-faq-btn i {
+        pointer-events: none;
+    }
+
+    .del-faq-btn:hover {
+        color: #c0392b;
+        background-color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .btn-admin-add-faq {
+        width: 300px;
+        padding: 10px 10px;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-admin-add-faq:hover {
+        padding: 10px 10px;
+        background: #2f8533;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+</style>
+
+<body>
+    <div class="admin-test-container">
+        <h1>Управление FAQ</h1>
+        <button id="btn-admin-add-faq" class="btn-admin-add-faq">Создать вопрос-ответ</button>
+        {% for faq in faq_data %}
+        <div class="test-container">
+            <div class="container-text-test">
+                <h1 class="test-name">{{ faq[1] }}</h1>
+                <p class="text-test-data">{{ faq[2] }}</p>
+            </div>
+            <button class="del-faq-btn" faq-id="{{ faq[0] }}" data-login="">
+                <i class="bi bi-trash"></i>
+            </button>  
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+<script>
+    document.getElementById('btn-admin-add-faq').addEventListener('click', function() {
+        window.location.href = '/admin/faq/add';
+    });
+
+    document.querySelectorAll('.del-faq-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const faqId = this.getAttribute('faq-id');
+
+            fetch(`/admin/faq/delete/${faqId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('Ошибка при удалении faq');
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+        });
+    });
+</script>
+
+</html>

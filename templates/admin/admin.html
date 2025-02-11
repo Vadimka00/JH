@@ -1,0 +1,264 @@
+<style>
+
+    .admin-panel {
+        display: flex;
+        flex-direction: column;
+        width: 260px;
+        min-height: 100vh;
+        gap: 10px;
+        padding: 20px 10px;
+        border-right: 2px solid #41b347;
+    }
+    
+    .admin-page {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+        background-color: white;
+        border-radius: 20px; 
+        border: 2px solid #41b347;
+    }
+
+    .admin-btn-load {
+        padding: 10px 10px;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .admin-btn-load:hover {
+        padding: 10px 10px;
+        background: #2f8533;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }   
+
+    .admin-link-page-users,
+    .admin-link-page-banners,
+    .admin-link-page-about,
+    .admin-link-page-quizzes,
+    .admin-link-page-faq {
+        display: none;
+    }
+
+    .show-link {
+        display: block;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        padding: 10px;
+    }
+
+</style>
+
+{% extends "base.html" %}
+
+{% block title %}Панель управления{% endblock %}
+
+{% block content %}
+
+    <div class="admin-page">
+        <div class="admin-panel">
+            <button id="users-btn" class="admin-btn-load">Пользователи</button>
+            <button id="banners-btn" class="admin-btn-load">Баннеры</button>
+            <button id="quizzes-btn" class="admin-btn-load">Тесты</button>
+            <button id="faq-btn" class="admin-btn-load">FAQ</button>
+        </div>
+        <div class="admin-link-page-users"></div>
+        <div class="admin-link-page-banners"></div>
+        <div class="admin-link-page-about"></div>
+        <div class="admin-link-page-quizzes"></div>
+        <div class="admin-link-page-faq"></div>
+    </div>
+
+    <script>
+
+        document.getElementById('quizzes-btn').addEventListener('click', function() {
+            fetch('/admin/quizzes')
+                .then(response => response.text())
+                .then(data => {
+                    const quizzesPage = document.querySelector('.admin-link-page-quizzes');
+                    quizzesPage.innerHTML = data;
+
+                    quizzesPage.classList.add('show-link');
+
+                    const otherPages = document.querySelectorAll('.admin-link-page-users, .admin-link-page-banners, .admin-link-page-about, .admin-link-page-faq');
+                    otherPages.forEach(page => page.classList.remove('show-link'));
+
+                    quizzesPage.addEventListener('click', function(event) {
+                        if (event.target && event.target.id === 'btn-admin-add-question') {
+                            window.location.href = '/admin/quizzes/add';
+                        }
+
+                        if (event.target && event.target.classList.contains('del-test-btn')) {
+                            const quizId = event.target.getAttribute('test-id');
+                            fetch(`/admin/quizzes/delete/${quizId}`, { method: 'DELETE' })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        window.location.reload();
+                                    } else {
+                                        alert('Ошибка при удалении теста');
+                                    }
+                                })
+                                .catch(error => console.error('Ошибка:', error));
+                        }
+                    });
+                });
+        });
+
+        document.getElementById('faq-btn').addEventListener('click', function() {
+            fetch('/admin/faq')
+                .then(response => response.text())
+                .then(data => {
+                    const faqPage = document.querySelector('.admin-link-page-faq');
+                    faqPage.innerHTML = data;
+
+                    faqPage.classList.add('show-link');
+
+                    const otherPages = document.querySelectorAll('.admin-link-page-quizzes, .admin-link-page-users, .admin-link-page-banners, .admin-link-page-about');
+                    otherPages.forEach(page => page.classList.remove('show-link'));
+
+                    faqPage.addEventListener('click', function(event) {
+                        if (event.target && event.target.id === 'btn-admin-add-faq') {
+                            window.location.href = '/admin/faq/add';
+                        }
+
+                        if (event.target && event.target.classList.contains('del-faq-btn')) {
+                            const faqId = event.target.getAttribute('faq-id');
+                            fetch(`/admin/faq/delete/${faqId}`, { method: 'DELETE' })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        window.location.reload();
+                                    } else {
+                                        alert('Ошибка при удалении FAQ');
+                                    }
+                                })
+                                .catch(error => console.error('Ошибка:', error));
+                        }
+                    });
+                });
+        });
+
+        document.getElementById('banners-btn').addEventListener('click', function() {
+            fetch('/admin/banners')
+                .then(response => response.text())
+                .then(data => {
+                    const faqPage = document.querySelector('.admin-link-page-banners');
+                    faqPage.innerHTML = data;
+
+                    faqPage.classList.add('show-link');
+
+                    const otherPages = document.querySelectorAll('.admin-link-page-quizzes, .admin-link-page-users, .admin-link-page-faq, .admin-link-page-about');
+                    otherPages.forEach(page => page.classList.remove('show-link'));
+
+                    document.getElementById('btn-admin-add-banner').addEventListener('click', function() {
+                        window.location.href = '/admin/banner/add';
+                    });
+
+                    $(".banners-delete-btn").click(function() {
+                        var bannerId = $(this).data("banner-id");
+
+                        $.ajax({
+                            url: "/admin/delete_banner",
+                            method: "POST",
+                            data: { banner_id: bannerId },
+                            success: function(response) {
+                                if (response.success) {
+                                    window.location.reload();
+                                } else {
+                                    alert("Failed to delete the banner.");
+                                }
+                            }
+                        });
+                    });
+                });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const usersBtn = document.getElementById("users-btn");
+            const usersPage = document.querySelector(".admin-link-page-users");
+
+            if (usersBtn) {
+                usersBtn.addEventListener("click", function () {
+                    usersPage.classList.add("show-link");
+
+                    document.querySelectorAll(".admin-link-page-quizzes, .admin-link-page-faq, .admin-link-page-banners, .admin-link-page-about")
+                        .forEach(page => page.classList.remove("show-link"));
+
+                    fetch('/admin/users')
+                        .then(response => response.text())
+                        .then(data => {
+                            usersPage.innerHTML = data;
+
+                            const usersContainer = usersPage.querySelector(".admin-test-container");
+                            if (usersContainer) {
+                                usersContainer.addEventListener("click", function (event) {
+                                    const button = event.target.closest("button");
+                                    if (!button) return;
+
+                                    const userLogin = button.getAttribute("data-login");
+
+                                    if (button.classList.contains("block-user-a-btn")) {
+                                        if (!confirm(`Вы уверены, что хотите удалить пользователя ${userLogin}?`)) return;
+
+                                        fetch("/admin/delete-user", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({ login: userLogin })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                button.closest(".test-container").remove();
+                                                window.location.reload();
+                                            } else {
+                                                alert("Ошибка: " + data.error);
+                                            }
+                                        })
+                                        .catch(() => alert("Ошибка сети. Попробуйте снова."));
+                                    }
+
+                                    if (button.classList.contains("owner-btn")) {
+                                        fetch("/admin/update-role", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({ login: userLogin })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                const roleElement = button.closest(".test-container").querySelector(".role-user-data");
+                                                if (roleElement) {
+                                                    roleElement.textContent = "admin";
+                                                }
+                                                button.disabled = true;
+                                                window.location.reload();
+                                            } else {
+                                                alert("Ошибка: " + data.error);
+                                            }
+                                        })
+                                        .catch(() => alert("Ошибка сети. Попробуйте снова."));
+                                    }
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка загрузки пользователей:', error);
+                            usersPage.innerHTML = '<p>Не удалось загрузить данные пользователей.</p>';
+                        });
+                });
+            }
+        });
+
+    </script>
+    
+{% endblock %}
+

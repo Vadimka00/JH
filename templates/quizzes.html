@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Тесты{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .test-post {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        max-width: 60%;
+        margin: auto;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .test-banner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        width: 100%;
+        height: 60px;
+        background: linear-gradient(135deg, #ffeb3b, #4caf50);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .test-banner i {
+        position: absolute;
+        font-size: 24px;
+        color: white;
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    .test-container {
+        padding: 10px;
+    }   
+
+    .test-name {
+        text-align: center;
+        align-items: center;
+        font-size: 1.2em;    
+    }
+
+    .test-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .test-link:hover .feed-post {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-test-data {
+        background: none;
+        border: none;
+        color: #777777;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .text-test-data:hover {
+        color: #388E3C;
+    }
+
+    .go-test {
+        padding: 10px 10px;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+    }
+
+    .go-test:hover {
+        padding: 10px 10px;
+        background: #2E7D32;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+
+        .test-content {
+            max-width: 100%;
+        }
+        .test-post {
+            max-width: 100%;
+        }
+
+    }
+
+</style>
+
+<h2>Выберите тест:</h2>
+<div class="test-content">
+        {% for quiz in quizzes %}
+            <div class="test-post" data-aos="fade-up" data-aos-delay="100">
+                <div class="test-banner">
+                    <i class="fas fa-dumbbell"></i>
+                    <i class="fas fa-apple-alt"></i>
+                    <i class="fas fa-leaf"></i>
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-running"></i>
+                    <i class="fas fa-bicycle"></i>
+                    <i class="fas fa-water"></i>
+                    <i class="fas fa-yoga"></i>
+                </div>
+                
+                <div class="test-container">
+                    <h1 class="test-name">{{ quiz.title }}</h1>
+                    <div class="container-text-test">
+                        <p class="text-test-data">Вопросы:<span>{{ quiz.question_count }}</span></p>
+                    </div>
+                    <a href="/quiz/{{ quiz.id }}" class="test-link">
+                        <div class="go-test">
+                            Пройти тест
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+</div>
+
+<script>
+window.onload = function() {
+    const icons = document.querySelectorAll('.test-banner i');
+    const bannerWidth = document.querySelector('.test-banner').offsetWidth;
+    const bannerHeight = document.querySelector('.test-banner').offsetHeight;
+
+    let positions = [];
+
+    icons.forEach(icon => {
+        let randomTop, randomLeft, randomSize;
+        let collision;
+
+        do {
+            collision = false;
+            randomTop = Math.random() * bannerHeight;
+            randomLeft = Math.random() * bannerWidth;
+            randomSize = 20 + Math.random() * 30;
+
+            for (let pos of positions) {
+                let distance = Math.sqrt(Math.pow(randomTop - pos.top, 2) + Math.pow(randomLeft - pos.left, 2));
+                if (distance < randomSize * 1.5) {
+                    collision = true;
+                    break;
+                }
+            }
+        } while (collision);
+
+        positions.push({ top: randomTop, left: randomLeft });
+
+        icon.style.top = `${randomTop}px`;
+        icon.style.left = `${randomLeft}px`;
+        icon.style.fontSize = `${randomSize}px`;
+    });
+};
+
+</script>
+
+{% endblock %}

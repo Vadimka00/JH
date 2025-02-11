@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}Тест{% endblock %}
+
+{% block content %}
+
+<style>
+
+    body {
+        height: 100vh !important;
+    }
+
+    .test-post {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        max-width: 80%;
+        height: 100%;
+        margin: auto;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .test-banner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        width: 100%;
+        height: 140px;
+        background: linear-gradient(135deg, #ffeb3b, #4caf50);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .test-banner i {
+        position: absolute;
+        font-size: 24px;
+        color: white;
+        opacity: 0.4;
+        pointer-events: none;
+        animation: randomMove 5s ease-in-out infinite;
+    }
+
+    .test-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .test-container h2 {
+        text-align: center;
+        align-items: center;
+        font-size: 1.4em;    
+    }
+
+    .test-container h3 {
+        text-align: center;
+        align-items: center;
+        font-size: 1.4em;    
+    }
+
+    .answer-btn-test {
+        background-color: #f0f0f0;
+        border: none;
+        color: #777777;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .answer-btn-test-active {
+        background-color: #f0f0f0;
+        border: none;
+        color: #388E3C;
+        border: 1px solid #388E3C;;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .answer-btn-test-active:hover {
+        color: #388E3C;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .answer-btn-test:hover {
+        color: #388E3C;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    #next-btn {
+        display: none;
+        background-color: #388E3C;
+        color: white;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        padding-bottom: 10px;
+    }
+
+    #next-btn:hover {
+        color: #f0f0f0;
+        background-color: #4caf50;
+        transform: translateY(-2px);
+    }
+
+    #result {
+        background: linear-gradient(135deg, #ffeb3b, #4caf50);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 3em;
+        font-weight: bold;
+        text-align: center;
+        display: inline-block;
+    }
+
+    #reult-text {
+        display: flex;
+        justify-content: center;
+        font-size: 1em;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        display: inline-block;
+    }
+
+    #result-button {
+        margin-bottom: 100px;
+        text-decoration: none;
+        background-color: #388E3C;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    #result-button:hover {
+        color: white;
+        background-color: #4caf50;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+
+        .test-content {
+            max-width: 100%;
+        }
+        .test-post {
+            max-width: 100%;
+        }
+
+
+    }
+
+</style>
+
+<div class="test-post">
+    <div class="test-banner">
+        <i class="fas fa-dumbbell"></i>
+        <i class="fas fa-apple-alt"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-running"></i>
+        <i class="fas fa-bicycle"></i>
+        <i class="fas fa-water"></i>
+        <i class="fas fa-yoga"></i>
+        <i class="fas fa-dumbbell"></i>
+        <i class="fas fa-apple-alt"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-running"></i>
+        <i class="fas fa-bicycle"></i>
+        <i class="fas fa-water"></i>
+        <i class="fas fa-yoga"></i>
+    </div>
+    
+    <div class="test-container">
+        <h2 id="question-title">Загрузка вопроса...</h2>
+        <h3 id="result" style="display:none;"></h3>
+        <h3 id="result-text" style="display:none;"></h3>
+        <a href="/quizzes" id="result-button" style="display:none;">Перейти к тестам</a>
+        <div class="container-text-test">
+            <div id="answers"></div>
+        </div>
+        <button id="next-btn">Далее</button>
+    </div>
+</div>
+
+<script>
+
+    let quizId = "{{ quiz_id }}";
+    let questionNumber = 1;
+    let correctAnswers = 0;
+    let totalQuestions = 0;
+
+    function loadQuestion() {
+        $.ajax({
+            url: '/get_question',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ quiz_id: quizId, question_number: questionNumber }),
+            success: function(data) {
+                $("#question-title").text(data.question);
+                $("#answers").empty();
+                data.answers.forEach(answer => {
+                    $("#answers").append(
+                        `<button class="answer-btn-test" data-id="${answer.id}">${answer.text}</button><br>`
+                    );
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("Ошибка запроса:", status, error);
+                showResult();
+            }
+        });
+    }
+
+    $(document).on("click", ".answer-btn-test", function() {
+        $(".answer-btn-test").removeClass("answer-btn-test-active");
+
+        let answerId = $(this).data("id");
+        $(this).addClass("answer-btn-test-active");
+
+        $.ajax({
+            url: '/submit_answer',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ answer_id: answerId }),
+            success: function(response) {
+                if (response.correct) correctAnswers++;
+                totalQuestions++;
+                questionNumber++;
+                $("#next-btn").show();
+            },
+            error: function(xhr, status, error) {
+                console.error("Ошибка отправки ответа:", status, error);
+            }
+        });
+    });
+
+    $("#next-btn").click(function() {
+        $("#next-btn").hide();
+        loadQuestion();
+    });
+
+    function showResult() {
+        let score = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+        let message = score >= 80 ? "Ты настоящий ЗОЖник!" :
+                      score >= 50 ? "Ты стараешься, но можно лучше!" :
+                      "Тебе стоит задуматься о здоровье!";
+        $("#question-title, #answers, #next-btn").hide();
+        $("#result").text(`${score}%`).show();
+        $("#result-text").text(`${message}`).show();
+        $("#result-button").show();
+    }
+
+    $(document).ready(loadQuestion);
+
+    const icons = document.querySelectorAll('.test-banner i');
+
+    function getRandomPosition() {
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        return { x, y };
+    }
+
+    function animateIcons() {
+        icons.forEach(icon => {
+            const { x, y } = getRandomPosition();
+
+            icon.style.transition = 'top 2s ease-in-out, left 2s ease-in-out';
+            icon.style.position = 'absolute';
+            icon.style.top = `${y}%`;
+            icon.style.left = `${x}%`;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        animateIcons();
+        setInterval(animateIcons, 2000);
+    });
+
+</script>
+
+{% endblock %}

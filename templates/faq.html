@@ -1,0 +1,91 @@
+<style>
+    .faq-content {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 70%;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .accordion-button {
+        --bs-accordion-btn-active-icon: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e);
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 12px;
+        transition: background-color 0.3s ease-in-out, box-shadow 0.2s;
+    }
+
+    .accordion-button:hover {
+        background-color: #388E3C;
+    }
+
+    .accordion-button:focus {
+        --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem #2e7d3225;
+    }
+
+    .accordion-body {
+        background: white;
+        color: #333;
+        border-radius: 8px;
+        padding: 15px;
+    }
+
+    .accordion-item {
+        border: none;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .accordion-header {
+        border-radius: 10px;
+    }
+
+    .accordion-button:not(.collapsed) {
+        --bs-accordion-active-color: #2E7D32;
+        --bs-accordion-active-bg: #f5f5f5;
+        --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem #2e7d3225;
+        --bs-accordion-btn-focus-border-color: #2e7d3225;
+    }
+
+    @media (max-width: 768px) {
+
+        .faq-content {
+            max-width: 90%;
+        }
+
+    }
+
+</style>
+
+{% extends "base.html" %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 faq-content">
+    <h2 class="mb-4 text-center" style="color: #2E7D32; font-weight: 700;">Часто задаваемые вопросы</h2>
+    <div class="accordion" id="faqAccordion">
+        {% for faq in faq_data %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading{{ loop.index }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                    {{ faq[1] }}
+                </button>
+            </h2>
+            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    {{ faq[2] }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

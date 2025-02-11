@@ -1,0 +1,365 @@
+{% extends "base.html" %}
+
+{% block title %} Создать тест {% endblock %}
+
+{% block content %}
+
+<style>
+
+    .add-quiz-container {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .add-test-container {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        padding: 10px;
+    }
+
+    .questions-count {
+        border-top: 1px solid #ddd;
+        margin-top: 10px;
+    }
+
+    .questions-count h4 {
+        font-size: 1.2em;
+    }
+
+    .que-count {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .que-count-p {
+        display: flex;
+        background-color: #388E3C;
+        color: white;
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+        font-weight: 300;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    .que-count textarea {
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1em;
+        resize: none;
+        height: 40px;
+        max-height: 500px;
+        overflow-y: hidden;
+        background: #f5f5f5;
+        transition: all 0.2s ease;
+    }
+
+    .que-count textarea:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+    }
+
+    .add-test-container textarea {
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1em;
+        resize: none;
+        height: 40px;
+        max-height: 500px;
+        overflow-y: hidden;
+        background: #f5f5f5;
+        transition: all 0.2s ease;
+    }
+
+    .add-test-container textarea:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+    }
+
+    .answers {
+        display: flex;
+        flex-direction: column;
+        padding: 0 50px;
+    }
+
+    .answer-count {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        justify-content: center;
+    }
+
+    .answer-count p{
+        display: flex;
+        color: #388E3C;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+        font-weight: 300;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    .add-answer {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        padding-bottom: 10px;
+        gap: 10px;
+    }
+
+    .btn-add-answer {
+        padding: 10px 10px;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-add-answer:hover {
+        padding: 10px 10px;
+        background: #2f8533;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .test-button {
+        display: flex;
+        padding-top: 30px;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-add-question {
+        padding: 10px 10px;
+        background: #f8d210;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-add-question:hover {
+        padding: 10px 10px;
+        background: #e0b700;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-save-test {
+        padding: 10px 10px;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-save-test:hover {
+        padding: 10px 10px;
+        background: #2f8533;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .add-answer input {
+        -moz-appearance: textfield;
+        appearance: textfield;
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1em;
+        resize: none;
+        height: 40px;
+        background: #f5f5f5;
+        transition: all 0.2s ease;
+    }
+
+    .add-answer input::-webkit-inner-spin-button,
+    .add-answer input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .add-answer input:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+    }
+
+    .delete-btn-q {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            justify-content: center;
+            gap: 8px;
+            color: #e74c3c;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn-q:hover {
+            color: #c0392b;
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+</style>
+
+<div class="add-quiz-container">
+    <h2 class="quiz-title">Создать новый тест</h2>
+    <div class="add-test-container">
+        <form method="POST" id="quiz-form">
+            <h3 class="quiz-h3">Название теста:</h3>
+            <textarea id="quiz-name" placeholder="Название теста" rows="1" name="title"></textarea>
+            <h3 class="quiz-h3">Вопросы:</h3>
+            <div id="questions" class="questions-count">
+                <div class="question" id="question-1">
+                    <div class="que-count">
+                        <p class="que-count-p">1</p>
+                        <textarea class="quiz-que" placeholder="Напишите вопрос" rows="1" name="question[1]" required></textarea>
+                    </div>
+                    <div class="answers">
+                        <h4>Варианты ответов:</h4>
+                        <div class="answer-count">
+                            <p class="answer-num">1</p>
+                            <textarea class="answers-count" placeholder="Ответ:" rows="1" name="answer[1][]" required></textarea>
+                        </div>
+                        <div class="answer-count">
+                            <p class="answer-num">2</p>
+                            <textarea class="answers-count" placeholder="Ответ:" rows="1" name="answer[1][]" required></textarea>
+                        </div>
+                    </div>
+                    <div class="add-answer">
+                        <input type="number" placeholder="Ответ:" required min="1" name="correct[1]" required><br>
+                        <button type="button" class="btn-add-answer" onclick="addAnswer(this)"> <i class="bi bi-plus-lg"></i> Добавить вариант ответа</button>
+                    </div>
+                </div>   
+            </div>
+            <div class="test-button">
+                <button type="button" class="btn-add-question" onclick="addQuestion()">Добавить вопрос</button>
+                <button type="submit" class="btn-save-test">Сохранить тест</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    
+    let questionCount = 1;
+
+    function addQuestion() {
+        questionCount++; 
+        let localAnswerCount = 2; 
+
+        const newQuestionHTML = `
+            <div class="question" id="question-${questionCount}">
+                <div class="que-count">
+                    <p class="que-count-p">${questionCount}</p>
+                    <textarea class="quiz-que" placeholder="Напишите вопрос" rows="1" name="question[${questionCount}]" required></textarea>
+                    <button type="button" class="delete-btn-q" onclick="deleteQ(this)">
+                        <i class="bi bi-trash"></i>
+                    </button> 
+                </div>
+                <div class="answers">
+                    <h4>Варианты ответов:</h4>
+                    <div class="answer-count">
+                        <p class="answer-num">1</p>
+                        <textarea class="answers-count" placeholder="Ответ:" rows="1" name="answer[${questionCount}][]" required></textarea>
+                    </div>
+                    <div class="answer-count">
+                        <p class="answer-num">2</p>
+                        <textarea class="answers-count" placeholder="Ответ:" rows="1" name="answer[${questionCount}][]" required></textarea>
+                    </div>
+                </div>
+                <div class="add-answer">
+                    <input type="number" placeholder="Ответ:" required min="1" class="correct-answer-input" name="correct[${questionCount}]" required><br>
+                    <button type="button" class="btn-add-answer" onclick="addAnswer(this)"> <i class="bi bi-plus-lg"></i> Добавить вариант ответа</button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById("questions").insertAdjacentHTML('beforeend', newQuestionHTML);
+    }
+
+    function addAnswer(button) {
+        const questionElement = button.closest('.question');
+        const questionId = questionElement.id.split('-')[1];
+        let answerCountElement = questionElement.querySelectorAll('.answer-count').length + 1;
+
+        const newAnswerHTML = `
+            <div class="answer-count">
+                <p class="answer-num">${answerCountElement}</p>
+                <textarea class="answers-count" placeholder="Ответ:" rows="1" name="answer[${questionId}][]"></textarea>
+            </div>
+        `;
+        
+        questionElement.querySelector('.answers').insertAdjacentHTML('beforeend', newAnswerHTML);
+    }
+
+    function deleteQ(button) {
+        button.closest('.question').remove();
+    }
+
+    document.getElementById('quiz-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        console.log("Отправляемые данные:");
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+
+        fetch('/admin/quizzes/add', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Тест успешно сохранен', data);
+            window.location.href = '/admin';
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    });
+
+</script>
+
+{% endblock %}

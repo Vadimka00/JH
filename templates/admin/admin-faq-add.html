@@ -1,0 +1,148 @@
+<style>
+
+    .add-faq-container {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .add-faq-container h3{
+        font-size: 1.5em;
+    }
+
+    .add-f-container {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        padding: 20px;
+    }
+
+    .add-f-container textarea {
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1em;
+        resize: none;
+        height: 40px;
+        max-height: 500px;
+        overflow-y: hidden;
+        background: #f5f5f5;
+        transition: all 0.2s ease;
+    }
+
+    .add-f-container textarea:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+    }
+
+    .faq-button {
+        display: flex;
+        width: 100%;
+        padding-top: 30px;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-save-faq {
+        width: 100%;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-save-faq:hover {
+        padding: 10px 10px;
+        background: #2f8533;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .an-f {
+        margin-top: 10px;
+    }
+
+</style>
+
+{% extends "base.html" %}
+
+{% block title %}FAQ - Добавить{% endblock %}
+
+{% block content %}
+<div class="add-faq-container">
+    <h2>Добавить новый вопрос - ответ</h2>
+    <div class="add-f-container">
+        <form method="POST" id="faq-form">
+            <h3>Вопрос:</h3>
+            <textarea id="faq-name" placeholder="Напишите вопрос" rows="1" name="title"></textarea>
+        
+            <div class="an-f">
+                <h3>Ответ:</h3>
+                <textarea id="faq-answer" placeholder="Напишите ответ" rows="1" name="answer[1]" required></textarea>
+            </div> 
+            <div class="faq-button">
+                <button type="submit" class="btn-save-faq">Добавить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function autoResize(textarea) {
+            textarea.style.height = "auto";
+            textarea.style.height = textarea.scrollHeight + "px";
+        }
+    
+        const questionTextarea = document.getElementById("faq-name");
+        const answerTextarea = document.getElementById("faq-answer");
+    
+        if (questionTextarea) {
+            questionTextarea.addEventListener("input", function () {
+                autoResize(this);
+            });
+        }
+    
+        if (answerTextarea) {
+            answerTextarea.addEventListener("input", function () {
+                autoResize(this);
+            });
+        }
+
+        document.getElementById("faq-form").addEventListener("submit", async function (event) {
+            event.preventDefault();
+    
+            let question = questionTextarea.value.trim();
+            let answer = answerTextarea.value.trim();
+    
+            if (question === "" || answer === "") {
+                alert("Пожалуйста, заполните оба поля.");
+                return;
+            }
+    
+            let formData = new FormData();
+            formData.append("question", question);
+            formData.append("answer", answer);
+    
+            let response = await fetch("/admin/faq/add", {
+                method: "POST",
+                body: formData
+            });
+            window.location.href = '/admin';
+        });
+    });
+
+</script>
+
+{% endblock %}
+
+    

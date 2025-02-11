@@ -1,0 +1,314 @@
+<style>
+
+    .feed-content {
+        width: 80%;
+        margin: auto;
+        
+    }
+
+    .feed-post {
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        padding: 20px;
+        gap: 10px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .feed-post:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-container {
+        max-width: 100%;
+        width: 100%;
+        height: 500px;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #f0f0f0;
+        position: relative;
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
+        .image-container {
+            max-height: 400px;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 991px) {
+        .image-container {
+            max-height: 300px;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        .feed-content {
+            width: 90%;
+        }
+
+        .feed-user-name {
+            text-align: start;
+        }
+
+        .image-container {
+            max-height: 200px;
+        }
+
+    }
+
+    .feed-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .image-with-blur {
+        filter: blur(10px); 
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .normal-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        z-index: 1;
+    }
+
+    .text-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 12px;
+    }
+
+    .data-user {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .feed-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .feed-user-name {
+        text-align: start;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #333333;
+        margin: 0;
+    }
+
+    .add-feed-data {
+        font-size: 0.9em;
+        color: #388E3C;
+        margin-top: 5px;
+    }
+
+    .container-text-feed {
+        border-radius: 12px;
+        min-height: 30px;
+    }
+
+    .text-feed-data {
+        font-size: 1em;
+        color: #4e4e4e;
+        line-height: 1.6;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .emoji-date {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .static-button {
+        display: flex;
+        gap: 10px;
+    }
+
+    .interaction-btn {
+        background: none;
+        border: none;
+        color: #777777;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .liked {
+        color: #f07c8a;
+    }
+
+    .interaction-btn:hover {
+        color: #f07c8a;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .interaction-btn-comments {
+        background: none;
+        border: none;
+        color: #777777;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .interaction-btn-comments:hover {
+        color: #388E3C;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .commented {
+        color: #388E3C;
+    }
+
+    .delete-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #e74c3c;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+        color: #c0392b;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .feed-post-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+</style>
+
+{% extends "base.html" %}
+
+{% block title %} Лента постов {% endblock %}
+
+{% block content %}
+
+<div class="feed-content">
+    <h3 class="post-title">Лента новостей сообщества</h3>
+    {% for post in posts %}
+        <div class="feed-post" data-aos="fade-up" data-aos-delay="100">
+            <a href="/user/{{ post.user.login }}" class="feed-post-link">
+                <div class="data-user">
+                    <img src="{{ url_for('static', filename=post.user.avatar) }}" alt="Avatar" class="feed-avatar">
+                    <div class="data-user-add">
+                        <h2 class="feed-user-name">{{ post.user.name }} {{ post.user.surname }}</h2>
+                        <h3 class="add-feed-data">{{ post.created_at }}</h3>
+                    </div>
+                </div>
+            </a>
+            <a href="/post/{{ post.user.login }}/{{ post.post_id }}" class="feed-post-link">
+                <div class="image-container">
+                    {% if post.image_path %}
+                        <img src="{{ post.image_path }}" alt="Фото поста" class="feed-image image-with-blur">
+                        <img src="{{ post.image_path }}" alt="Фото поста" class="feed-image normal-image">
+                    {% endif %}
+                </div>
+
+                <div class="text-container">
+                    <div class="container-text-feed">
+                        <p class="text-feed-data">{{ post.text }}</p>
+                    </div>
+                </a>
+                <div class="emoji-date">
+                    <div class="static-button">
+                        <button class="interaction-btn {% if post.user_liked_post %}liked{% endif %}" data-post-owner="{{ post.user.login }}" data-post-id="{{ post.post_id }}">
+                            <i class="bi bi-heart-fill"></i>
+                            <span>{{ post.like_count }}</span>
+                        </button>
+                        <a href="/post/{{ post.user.login }}/{{ post.post_id }}" class="feed-post-link">
+                            <button class="interaction-btn-comments {% if post.comments_count > 0 %}commented{% endif %}">
+                                <i class="bi bi-chat-right-heart-fill"></i>
+                                <span>{{ post.comments_count }}</span>
+                            </button>
+                        </a>
+                    </div>
+                    {% if current_user.role == 'admin' or post.user.login == current_user.login %}
+                    <button class="delete-btn" data-post-id="{{ post.post_id }}" data-login="{{ user['login'] }}">
+                        <i class="bi bi-trash"></i>
+                    </button>  
+                    {% endif %}                    
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+
+    const currentUserLogin = "{{ user['login'] }}";
+    const userLinks = document.querySelectorAll('.user-link');
+
+    userLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const targetLogin = link.getAttribute('data-login');
+
+            if (targetLogin === currentUserLogin) {
+                window.location.href = `/profile/${currentUserLogin}`;
+            } else {
+                window.location.href = `/user/${targetLogin}`;
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}
+

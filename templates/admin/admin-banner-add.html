@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %} Добавить баннер {% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        height: 100vh;
+    }
+    
+    .container {
+        width: 80%;
+    }
+    
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .textarea-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        width: 100%;
+        position: relative;
+    }
+    
+    .textarea-container textarea {
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1em;
+        resize: none;
+        height: 40px;
+        max-height: 500px;
+        overflow-y: hidden;
+        background: #f5f5f5;
+        transition: all 0.2s ease;
+    }
+    
+    .textarea-container textarea:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+    }
+    
+    .submit-button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #388E3C;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2em;
+        transition: background 0.3s ease, transform 0.2s ease;
+        text-align: center;
+    }
+    
+    .attach-button {
+        min-width: 120px;
+        height: 40px;
+        gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #388E3C;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background 0.3s ease, transform 0.2s ease;
+        text-align: center;
+    }
+    
+    .attach-button:hover, .submit-button:hover {
+        background: #2E7D32;
+    }
+    
+    .submit-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: scale(0.95);
+    }
+    
+    .text-content {
+        font-size: 1em;
+        color: #333;
+    }
+    
+    .image-preview {
+        margin-top: 10px;
+        max-width: 100%;
+        border-radius: 10px;
+    }
+    
+    .post-card {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+    
+    
+    @media (max-width: 768px) {
+    
+        .attach-button {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .attach-button span {
+            display: none;
+        }
+    
+    }
+
+    </style>
+    
+    <div class="container">
+        <h3 class="post-card-title">Добавить баннер</h3>
+        <div class="form-container">
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="image-preview-container" id="image-preview"></div>
+                <div class="textarea-container">
+                    <textarea id="post-textarea" placeholder="Напишите слоган..." rows="1"></textarea>
+                    <label for="post-image" class="attach-button">
+                        <i class="fa fa-plus"></i>
+                        <span>Фото</span>
+                    </label>
+                    <input type="file" id="post-image" accept="image/*" style="display:none;">
+                    <button type="submit" class="submit-button" disabled>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const uploadForm = document.getElementById("upload-form");
+            const postTextarea = document.getElementById("post-textarea");
+            const postImage = document.getElementById("post-image");
+            const submitButton = document.querySelector(".submit-button");
+            const attachButton = document.querySelector(".attach-button");
+            const previewContainer = document.createElement("div");
+            previewContainer.style.width = "100%";
+            previewContainer.style.textAlign = "center";
+            previewContainer.style.marginBottom = "10px";
+            previewContainer.style.position = "relative";
+            
+            uploadForm.insertBefore(previewContainer, uploadForm.firstChild);
+        
+            function updateButtonState() {
+                const hasText = postTextarea.value.trim().length > 0;
+                const hasImage = postImage.files.length > 0;
+                submitButton.disabled = !(hasText && hasImage);
+            }
+        
+            function previewImage() {
+                previewContainer.innerHTML = "";
+                if (postImage.files.length > 0) {
+                    const file = postImage.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const blurredBg = document.createElement("img");
+                        blurredBg.src = e.target.result;
+                        blurredBg.style.position = "absolute";
+                        blurredBg.style.top = "0";
+                        blurredBg.style.left = "0";
+                        blurredBg.style.width = "100%";
+                        blurredBg.style.height = "100%";
+                        blurredBg.style.borderRadius = "10px";
+                        blurredBg.style.objectFit = "cover";
+                        blurredBg.style.filter = "blur(5px)";
+                        blurredBg.style.opacity = "1";
+    
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.style.maxWidth = "100%";
+                        img.style.borderRadius = "10px";
+                        img.style.position = "relative";
+                        img.style.zIndex = "1";
+                        img.style.marginBottom = "5px";
+    
+                        previewContainer.appendChild(blurredBg);
+                        previewContainer.appendChild(img);
+                        attachButton.style.background = "#e0b700";
+                        attachButton.style.minWidth = "140px";
+                        attachButton.textContent = "Изменить фото";
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    attachButton.style.background = "#388E3C";
+                    attachButton.textContent = "Фото";
+                }
+                updateButtonState();
+            }
+    
+            postTextarea.addEventListener("input", function () {
+                this.style.height = "auto";
+                this.style.height = this.scrollHeight + "px";
+                updateButtonState();
+            });
+    
+            postImage.addEventListener("change", previewImage);
+            postTextarea.addEventListener("input", updateButtonState);
+    
+            uploadForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+    
+                const formData = new FormData();
+                formData.append("text", postTextarea.value);
+                if (postImage.files.length > 0) {
+                    formData.append("image", postImage.files[0]);
+                }
+    
+                fetch('/upload/banner', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "Баннер добавлен") {
+                        window.location.href = "/admin";
+                    } else {
+                        alert("Произошла ошибка при отправке баннера");
+                    }
+                })
+                .catch(error => {
+                    console.error("Ошибка:", error);
+                    alert("Произошла ошибка при отправке баннера");
+                });
+            });
+    
+            updateButtonState();
+        });
+
+    </script>
+    
+{% endblock %}

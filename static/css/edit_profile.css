@@ -1,0 +1,249 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center; 
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 100vh;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    overflow-y: auto;
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #888;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.avatar-container {
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.avatar-label {
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+}
+
+#avatar-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+    border: 3px solid #4CAF50;
+}
+
+.upload-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.avatar-label:hover .upload-text {
+    opacity: 1;
+}
+
+.name-label {
+    padding-left: 12px;
+}
+
+.profile-form input {
+    width: 100%;
+    padding: 10px;
+    height: 50px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    font-size: 14px;
+    transition: border 0.3s ease;
+    margin-bottom: 15px;
+    background: #f5f5f5;
+    font-size: 1em;
+}
+
+.profile-form input:focus{
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+}
+
+.profile-form textarea {
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    font-size: 1em;
+    resize: none;
+    height: 50px;
+    max-height: 200px;
+    overflow-y: hidden;
+    background: #f5f5f5;
+    transition: all 0.2s ease;
+}
+
+.profile-form textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #388E3C, #2E7D32);
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.avatar-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.avatar-label {
+    cursor: pointer;
+}
+
+#char-count {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    text-align: right;
+    transition: color 0.3s ease;
+}
+
+.flatpickr-calendar {
+    position: fixed;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.flatpickr-prev-month, .flatpickr-next-month {
+    color: #4CAF50;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+    color: #388E3C;
+}
+
+.flatpickr-day.selected, .flatpickr-day:hover {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+}
+
+.flatpickr-month {
+    background-color: #388E3C;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.flatpickr-month:hover {
+    background-color: #4CAF50;
+}
+
+.flatpickr-weekday {
+    color: #388E3C;
+}
+
+.flatpickr-day.selected, .flatpickr-day:hover {
+    border: none;
+    background-color: #4CAF50;
+}
+
+.flatpickr-calendar {
+    border: 2px solid #4CAF50;
+}
+
+.flatpickr-calendar:focus {
+    outline: none;
+}
+
+.flatpickr-month {
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 100%;
+        padding: 20px;
+    }
+    .avatar-container {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}

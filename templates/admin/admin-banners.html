@@ -1,0 +1,206 @@
+<style>
+    .banners-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        gap: 10px;
+    } 
+
+    .banner-post {
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        padding: 20px;
+        gap: 10px;
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .banner-image-container {
+        max-width: 100%;
+        width: 100%;
+        height: 450px;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #f0f0f0;
+        position: relative;
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
+        .banner-image-container {
+            max-height: 400px;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 991px) {
+        .banner-image-container {
+            max-height: 300px;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .banners-content {
+            width: 90%;
+        }
+
+        .banner-post {
+            width: 100%;
+        }
+
+        .banner-image-container {
+            max-height: 100px;
+        }
+    }
+
+    .banner-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .image-with-blur {
+        filter: blur(10px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .normal-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        z-index: 1;
+    }
+
+    .text-container-banners {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 12px;
+    }
+
+    .banner-text {
+        font-size: 1em;
+        color: #4e4e4e;
+        line-height: 1.6;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .emoji-date-banners {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .banners-delete-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #e74c3c;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .banners-delete-btn:hover {
+        color: #c0392b;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .btn-admin-add-banner {
+        max-width: 300px;
+        padding: 10px 10px;
+        background: #388E3C;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+    .btn-admin-add-banner:hover {
+        padding: 10px 10px;
+        background: #2f8533;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9em;
+    }
+
+</style>
+
+<div class="banners-content">
+    <h1>Баннеры</h1>
+    <button id="btn-admin-add-banner" class="btn-admin-add-banner">Добавить баннер</button>
+    {% for banner in banners %}
+    <div class="banner-post">
+        <div class="banner-image-container">
+            <img src="{{ url_for('static', filename=banner[2]) }}" alt="Фото поста" class="banner-image image-with-blur">
+            <img src="{{ url_for('static', filename=banner[2]) }}" alt="Фото поста" class="banner-image normal-image">
+        </div>
+    
+        <div class="text-container-banners">
+            <p class="banner-text">{{ banner[1] }}</p>
+        </div>
+    
+        <div class="emoji-date-banners">
+            <button class="banners-delete-btn" data-banner-id="{{ banner[0] }}">
+                <i class="bi bi-trash"></i> Удалить
+            </button>                   
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    document.getElementById('btn-admin-add-banner').addEventListener('click', function() {
+        window.location.href = '/admin/banner/add';
+    });
+
+    $(document).ready(function() {
+        $(".banners-delete-btn").click(function() {
+            var bannerId = $(this).data("banner-id");
+
+            $.ajax({
+                url: "/admin/delete_banner",
+                method: "POST",
+                data: { banner_id: bannerId },
+                success: function(response) {
+                    if (response.success) {
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete the banner.");
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+

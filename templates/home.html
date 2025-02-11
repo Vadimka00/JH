@@ -1,0 +1,618 @@
+<style>
+
+    .posts-feed {
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+    }
+
+    .interactive-description {
+        font-size: 1.2em;
+    }
+
+    .caption-bg {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: inline-block;
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+
+        .caption-bg{
+            width: 100%;
+        }
+
+        .caption-bg h5{
+            width: 100%;
+            font-size: 14px !important;;
+            padding: 5px;
+        }
+
+        .infographics {
+            max-width: 100% !important;
+            padding: 0 !important;
+            align-items: center;
+        }
+
+        .infographics-title {
+            font-size: 24px !important;
+        }
+
+        .chart {
+            width: 100% !important;
+        }
+    }
+
+    .infographics {
+        font-family: 'Arial', sans-serif;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 0;
+        background-color: #f4f4f9;
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .infographics-title {
+        text-align: center;
+        font-size: 36px;
+        color: #333;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .chart {
+        background-color: #fff;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 32%;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .chart:hover {
+        box-shadow: 0 8px 16px #43a0485b;
+        transform: translateY(-5px) scale(1.2em);
+    }
+
+    .chart-title {
+        font-size: 24px;
+        color: #2d3b48;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .chart-description {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.6;
+        margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .chart {
+            width: 48%;
+        }
+        .video-frame {
+            height: 300px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .chart {
+            width: 100%;
+        }
+    }
+
+    .chart-title {
+        animation: fadeIn 1s ease-out;
+    }
+ 
+    .interactive-elements {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .health-change {
+        width: 100%;
+    }
+
+    .video-frame {
+        width: 100%;
+        height: 700px;
+    }
+
+    .habit-selector {
+        display: flex;
+        width: 100%;
+        height: auto;
+        margin: 0 auto !important;
+        gap: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .habit-button {
+        margin-bottom: 100px;
+        text-decoration: none;
+        background-color: #388E3C;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin: 0 auto !important;
+        transition: all 0.3s ease;
+    }
+
+    .habit-button:hover {
+        color: white;
+        background-color: #4caf50;
+        transform: translateY(-2px);
+    }
+
+
+    .feed-content {
+        width: 80%;
+        margin: auto;
+        
+    }
+
+    .feed-post {
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        padding: 20px;
+        gap: 10px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .feed-post:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-container {
+        max-width: 100%;
+        width: 100%;
+        height: 500px;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #f0f0f0;
+        position: relative;
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
+        .image-container {
+            max-height: 400px;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 991px) {
+        .image-container {
+            max-height: 300px;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        .feed-content {
+            width: 90%;
+        }
+
+        .feed-user-name {
+            text-align: start;
+        }
+
+        .image-container {
+            max-height: 200px;
+        }
+
+
+    }
+
+    .feed-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .image-with-blur {
+        filter: blur(10px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .normal-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        z-index: 1;
+    }
+
+    .text-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 12px;
+    }
+
+    .data-user {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .feed-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .feed-user-name {
+        text-align: start;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #333333;
+        margin: 0;
+    }
+
+    .add-feed-data {
+        font-size: 0.9em;
+        color: #388E3C;
+        margin-top: 5px;
+    }
+
+    .container-text-feed {
+        border-radius: 12px;
+        min-height: 30px;
+    }
+
+    .text-feed-data {
+        font-size: 1em;
+        color: #4e4e4e;
+        line-height: 1.6;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .emoji-date {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .static-button {
+        display: flex;
+        gap: 10px;
+    }
+
+    .interaction-btn {
+        background: none;
+        border: none;
+        color: #777777;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .liked {
+        color: #f07c8a;
+    }
+
+    .interaction-btn:hover {
+        color: #f07c8a;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .interaction-btn-comments {
+        background: none;
+        border: none;
+        color: #777777;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .interaction-btn-comments:hover {
+        color: #388E3C;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .commented {
+        color: #388E3C;
+    }
+
+    .delete-btn {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #e74c3c;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+        color: #c0392b;
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .feed-post-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+</style>
+
+{% extends "base.html" %}
+
+{% block title %} JouHealth {% endblock %}
+
+{% block content %}
+
+    <div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-indicators">
+            {% for banner in banners %}
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.index0 == 0 %}active{% endif %}" aria-current="true" aria-label="{{ loop.index0 }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for banner in banners %}
+                <div class="carousel-item {% if loop.index0 == 0 %}active{% endif %}">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ url_for('static', filename=banner[2]) }}" class="d-block w-100" alt="{{ banner[0] }}">
+                    </div>
+                    <div class="carousel-caption  d-md-block">
+                        <div class="caption-bg">
+                            <h5>{{ banner[1] }}</h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <section class="posts-feed" data-aos="fade-up" data-aos-delay="100">
+        <h2>Лента постов</h2>
+        {% for post in posts %}
+        <div class="feed-post" data-aos="fade-up" data-aos-delay="100">
+            <a href="/user/{{ post.user.login }}" class="feed-post-link">
+                <div class="data-user">
+                    <img src="{{ url_for('static', filename=post.user.avatar) }}" alt="Avatar" class="feed-avatar">
+                    <div class="data-user-add">
+                        <h2 class="feed-user-name">{{ post.user.name }} {{ post.user.surname }}</h2>
+                        <h3 class="add-feed-data">{{ post.created_at }}</h3>
+                    </div>
+                </div>
+            </a>
+            <a href="/posts" class="feed-post-link">
+                <div class="image-container">
+                    {% if post.image_path %}
+                        <img src="{{ post.image_path }}" alt="Фото поста" class="feed-image image-with-blur">
+                        <img src="{{ post.image_path }}" alt="Фото поста" class="feed-image normal-image">
+                    {% endif %}
+                </div>
+
+                <div class="text-container">
+                    <div class="container-text-feed">
+                        <p class="text-feed-data">{{ post.text }}</p>
+                    </div>
+                </a>
+                <div class="emoji-date">
+                    {% if current_user.role == 'admin' or post.user.login == current_user.login %}
+                    <button class="delete-btn" data-post-id="{{ post.post_id }}" data-login="{{ user['login'] }}">
+                        <i class="bi bi-trash"></i>
+                    </button>  
+                    {% endif %}                    
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="infographics">
+        <h2 class="infographics-title" data-aos="fade-up" data-aos-delay="100">Как привычки влияют на здоровье</h2>
+
+        <div class="chart" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="chart-title">Сравнение здоровья: Наркотики vs ЗОЖ</h3>
+            <canvas id="healthChart"></canvas>
+            <p class="chart-description">График сравнивает ухудшение здоровья с возрастом при употреблении наркотиков и на фоне ЗОЖ. Видно, как наркотики ускоряют процесс старения и приводят к более ранним заболеваниям.</p>
+        </div>
+
+        <div class="chart" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="chart-title">Статистика вреда наркотиков</h3>
+            <canvas id="damageChart"></canvas>
+            <p class="chart-description">Данные показывают, как наркотики приводят к серьезным заболеваниям и смертям. С помощью этих графиков вы можете увидеть влияние на общественное здоровье.</p>
+        </div>
+
+        <div class="chart" data-aos="fade-up" data-aos-delay="300">
+            <h3 class="chart-title">Как ЗОЖ меняет ваше тело</h3>
+            <canvas id="healthyLifestyleChart"></canvas>
+            <p class="chart-description">График демонстрирует улучшение работы сердца, легких и общего самочувствия при отказе от вредных привычек и занятиях спортом.</p>
+        </div>
+    </section>
+    
+    <section class="interactive-elements" data-aos="fade-up" data-aos-delay="100">
+
+        <p class="interactive-description">Выберите одну из привычек, чтобы увидеть, как она влияет на ваше здоровье.</p>
+
+        <div class="habit-selector">
+            <button class="habit-button" id="smokingButton" data-aos="fade-up" data-aos-delay="100">Курение</button>
+            <button class="habit-button" id="healthyLifestyleButton" data-aos="fade-up" data-aos-delay="100">ЗОЖ</button>
+            <button class="habit-button" id="drugsButton" data-aos="fade-up" data-aos-delay="100">Наркотики</button>
+        </div>
+    
+        <div class="health-change">
+
+            <div id="smokingVideo" class="habit-video" style="display: none;">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/NKD_1Y4E-c8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div id="drugsVideo" class="habit-video" style="display: none;">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/lz_3EgpQAcQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div id="healthyLifestyleVideo" class="habit-video" style="display: none;">
+                <iframe class="video-frame" src="https://www.youtube.com/embed/EJZIdvLq92w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+    
+    <section class="about-us" id="about-us" data-aos="fade-up" data-aos-delay="100">
+        <div class="container">
+            <h2 class="section-title">О нас</h2>
+            
+            <div class="about-grid">
+                <div class="about-block" data-aos="fade-up">
+                    <i class="fas fa-users icon"></i>
+                    <h3>Сообщество поддержки</h3>
+                    <p>JouHealth — это современная социальная сеть, объединяющая людей, стремящихся к здоровому образу жизни и освобождению от зависимостей.</p>
+                </div>
+                
+                <div class="about-block" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-heart icon"></i>
+                    <h3>Взаимопомощь и вдохновение</h3>
+                    <p>Наши пользователи делятся личными историями, знаниями и рекомендациями, помогая друг другу преодолевать вызовы и формировать здоровые привычки.</p>
+                </div>
+                
+                <div class="about-block" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-dumbbell icon"></i>
+                    <h3>Оффлайн-мероприятия</h3>
+                    <p>Мы организуем тренировки, мастер-классы и поддерживаем участников на пути к достижению личных целей в ЗОЖ.</p>
+                </div>
+                
+                <div class="about-block" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-globe icon"></i>
+                    <h3>Меняем мир вместе</h3>
+                    <p>JouHealth — это не просто соцсеть, а платформа для позитивных изменений. Каждое здоровое решение — шаг к лучшему будущему!</p>
+                </div>
+            </div>
+            
+            <div class="cta" data-aos="zoom-in">
+                <p>Присоединяйтесь к <strong>JouHealth</strong> и станьте частью сообщества, которое меняет мир!</p>
+                <a href="/login" class="btn-primary feed-post-link">Присоединиться</a>
+            </div>
+        </div>
+    </section>
+    
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctxHealth = document.getElementById('healthChart').getContext('2d');
+        const healthChart = new Chart(ctxHealth, {
+            type: 'pie',
+            data: {
+                labels: ['Наркотики', 'ЗОЖ'],
+                datasets: [{
+                    data: [60, 40],
+                    backgroundColor: ['#ffb3b3', '#b3e6b3']
+                }]
+            }
+        });
+
+        const ctxDamage = document.getElementById('damageChart').getContext('2d');
+        const damageChart = new Chart(ctxDamage, {
+            type: 'pie',
+            data: {
+                labels: ['Смертность', 'Заболевания сердца', 'Заболевания легких', 'Нарушения психики'],
+                datasets: [{
+                    data: [45, 30, 15, 10],
+                    backgroundColor: ['#ffcccc', '#f2a6a6', '#f7c1c1', '#f2b97f']
+                }]
+            }
+        });
+
+        const ctxLifestyle = document.getElementById('healthyLifestyleChart').getContext('2d');
+        const healthyLifestyleChart = new Chart(ctxLifestyle, {
+            type: 'pie',
+            data: {
+                labels: ['Сердце', 'Легкие', 'Психика', 'Общее самочувствие'],
+                datasets: [{
+                    data: [30, 25, 20, 25],
+                    backgroundColor: ['#a8e6a1', '#d0f0c0', '#9fd2a2', '#b6f2b4']
+                }]
+            }
+        });
+    });
+
+    document.getElementById('smokingButton').addEventListener('click', function() {
+        document.getElementById('smokingVideo').style.display = 'block';
+        document.getElementById('drugsVideo').style.display = 'none';
+        document.getElementById('healthyLifestyleVideo').style.display = 'none';
+    });
+
+    document.getElementById('drugsButton').addEventListener('click', function() {
+        document.getElementById('smokingVideo').style.display = 'none';
+        document.getElementById('drugsVideo').style.display = 'block';
+        document.getElementById('healthyLifestyleVideo').style.display = 'none';
+    });
+
+    document.getElementById('healthyLifestyleButton').addEventListener('click', function() {
+        document.getElementById('smokingVideo').style.display = 'none';
+        document.getElementById('drugsVideo').style.display = 'none';
+        document.getElementById('healthyLifestyleVideo').style.display = 'block';
+    });
+
+</script>
+
+{% endblock %}
