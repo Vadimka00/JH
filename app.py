@@ -561,7 +561,7 @@ def view_user_profile(login):
     like_conn = sqlite3.connect("db/likes.db")
     like_cursor = like_conn.cursor()
     like_cursor.execute("SELECT post_id FROM likes WHERE liked_by=?", (current_user.login,))
-    liked_posts = {row[0] for row in like_cursor.fetchall()}  # Множество постов, на которые поставил лайк текущий пользователь
+    liked_posts = {row[0] for row in like_cursor.fetchall()}
     like_conn.close()
 
     for row in posts:
